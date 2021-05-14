@@ -1,0 +1,4 @@
+include ':libNavCompiler'
+include ':libNavAnnotation'
+include ':app'
+rootProject.name = "goodVidoe"

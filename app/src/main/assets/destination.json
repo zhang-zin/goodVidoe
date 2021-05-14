@@ -1,0 +1,34 @@
+{
+  "tab/notifications": {
+    "isFragment": true,
+    "asStarter": false,
+    "needLogin": false,
+    "pageUrl": "tab/notifications",
+    "className": "com.zj.goodvidoe.ui.notifications.NotificationsFragment",
+    "id": 773783859
+  },
+  "home/page": {
+    "isFragment": false,
+    "asStarter": false,
+    "needLogin": false,
+    "pageUrl": "home/page",
+    "className": "com.zj.goodvidoe.MainActivity",
+    "id": 694048445
+  },
+  "tab/dashboard": {
+    "isFragment": true,
+    "asStarter": false,
+    "needLogin": true,
+    "pageUrl": "tab/dashboard",
+    "className": "com.zj.goodvidoe.ui.dashboard.DashboardFragment",
+    "id": 717140773
+  },
+  "tab/home": {
+    "isFragment": true,
+    "asStarter": true,
+    "needLogin": false,
+    "pageUrl": "tab/home",
+    "className": "com.zj.goodvidoe.ui.home.HomeFragment",
+    "id": 475674105
+  }
+}
