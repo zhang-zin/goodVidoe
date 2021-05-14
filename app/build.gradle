@@ -51,5 +51,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation project(':libNavAnnotation')
+    implementation project(':hi_library')
     kapt project(":libNavCompiler")
+
+    implementation 'com.alibaba:fastjson:1.2.75'
 }

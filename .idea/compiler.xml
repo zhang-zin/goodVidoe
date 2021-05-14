@@ -22,6 +22,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
       <module name="goodVidoe.app" target="11" />
+      <module name="goodVidoe.hi_library" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
