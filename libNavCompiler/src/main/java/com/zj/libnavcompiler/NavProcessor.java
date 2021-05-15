@@ -136,13 +136,13 @@ public class NavProcessor extends AbstractProcessor {
             Annotation annotation = element.getAnnotation(annotationClz);
             if (annotation instanceof ActivityDestination) {
                 ActivityDestination activityDestination = (ActivityDestination) annotation;
-                pageUrl = activityDestination.pagerUrl();
+                pageUrl = activityDestination.pageUrl();
                 needLogin = activityDestination.needLogin();
                 asStarter = activityDestination.asStarter();
                 isFragment = false;
             } else if (annotation instanceof FragmentDestination) {
                 FragmentDestination fragmentDestination = (FragmentDestination) annotation;
-                pageUrl = fragmentDestination.pagerUrl();
+                pageUrl = fragmentDestination.pageUrl();
                 needLogin = fragmentDestination.needLogin();
                 asStarter = fragmentDestination.asStarter();
                 isFragment = true;

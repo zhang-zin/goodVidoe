@@ -1,5 +1,10 @@
 package com.zj.goodvidoe.model;
 
+/**
+ * 路由实体类
+ *
+ * @author 张锦
+ */
 public class Destination {
     public String pageUrl;
     public int id;

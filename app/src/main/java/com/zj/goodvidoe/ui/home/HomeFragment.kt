@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.zj.goodvidoe.R
 import com.zj.libnavannotation.FragmentDestination
 
-@FragmentDestination(pagerUrl = "tab/home", asStarter = true)
+@FragmentDestination(pageUrl = "main/tabs/home", asStarter = true)
 class HomeFragment : Fragment() {
 
     private lateinit var homeViewModel: HomeViewModel

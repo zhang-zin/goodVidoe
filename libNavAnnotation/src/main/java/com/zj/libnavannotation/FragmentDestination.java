@@ -3,6 +3,9 @@ package com.zj.libnavannotation;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
 
+/**
+ * @author 张锦
+ */
 @Target(ElementType.TYPE)
 public @interface FragmentDestination {
 
@@ -11,7 +14,7 @@ public @interface FragmentDestination {
      *
      * @return 路由路径
      */
-    String pagerUrl();
+    String pageUrl();
 
     /**
      * 是否为默认启动的页面

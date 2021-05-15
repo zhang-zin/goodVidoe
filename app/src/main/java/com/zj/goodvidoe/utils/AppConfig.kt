@@ -1,8 +1,8 @@
 package com.zj.goodvidoe.utils
 
-import android.util.Log
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.TypeReference
+import com.zj.goodvidoe.model.BottomBar
 import com.zj.goodvidoe.model.Destination
 import com.zj.hi_library.util.AppGlobals
 import java.io.BufferedReader
@@ -12,16 +12,24 @@ import java.io.InputStreamReader
 object AppConfig {
 
     private var sDestConfig: HashMap<String, Destination>? = null
+    private var sTabsConfig: BottomBar? = null
 
     fun getDestConfig(): HashMap<String, Destination> {
         if (sDestConfig == null) {
             val content: String = parseFile("destination.json")
-            Log.e("zhang", content)
             sDestConfig = JSON.parseObject(
                 content,
                 object : TypeReference<HashMap<String, Destination>>() {})
         }
         return sDestConfig!!
+    }
+
+    fun getTabsConfig(): BottomBar {
+        if (sTabsConfig == null) {
+            val content = parseFile("main_tabs_config.json")
+            sTabsConfig = JSON.parseObject(content, BottomBar::class.java)
+        }
+        return sTabsConfig!!
     }
 
     private fun parseFile(fileName: String): String {
@@ -44,6 +52,5 @@ object AppConfig {
         }
         return builder.toString()
     }
-
 
 }
