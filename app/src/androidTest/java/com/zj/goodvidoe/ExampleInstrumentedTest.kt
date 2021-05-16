@@ -1,4 +1,4 @@
-package com.zj.goodvidoe
+package com.zj.goodvideo
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.zj.goodvidoe", appContext.packageName)
+        assertEquals("com.zj.goodvideo", appContext.packageName)
     }
 }

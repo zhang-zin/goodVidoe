@@ -1,4 +1,4 @@
-package com.zj.goodvidoe
+package com.zj.goodvideo
 
 import org.junit.Test
 

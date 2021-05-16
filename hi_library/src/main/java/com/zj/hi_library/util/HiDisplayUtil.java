@@ -3,6 +3,7 @@ package com.zj.hi_library.util;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Point;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.WindowManager;
@@ -27,26 +28,13 @@ public class HiDisplayUtil {
     }
 
 
-    public static int getDisplayWidthInPx(@NonNull Context context) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        if (wm != null) {
-            Display display = wm.getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            return size.x;
-        }
-        return 0;
-
+    public static int getScreenWidth() {
+        DisplayMetrics metrics = AppGlobals.INSTANCE.get().getResources().getDisplayMetrics();
+        return metrics.widthPixels;
     }
 
-    public static int getDisplayHeightInPx(@NonNull Context context) {
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        if (wm != null) {
-            Display display = wm.getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-            return size.y;
-        }
-        return 0;
+    public static int getScreenHeight() {
+        DisplayMetrics metrics = AppGlobals.INSTANCE.get().getResources().getDisplayMetrics();
+        return metrics.heightPixels;
     }
 }

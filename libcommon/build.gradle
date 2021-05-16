@@ -1,0 +1,83 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        dataBinding = true
+    }
+}
+
+dependencies {
+
+    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    //兼容包
+    api 'androidx.core:core-ktx:1.3.2'
+    api 'androidx.appcompat:appcompat:1.2.0'
+
+    //material组件
+    api 'com.google.android.material:material:1.3.0-alpha02'
+
+    //约束布局
+    api 'androidx.constraintlayout:constraintlayout:2.0.1'
+
+    //navigation导航
+    api 'androidx.navigation:navigation-fragment-ktx:2.3.0'
+    api 'androidx.navigation:navigation-ui-ktx:2.3.0'
+
+    //包含了 viewmodel 和 livedata
+    api 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+
+    //注解使用生命周期编译器
+    api 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.0'
+    api 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0'
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.2.0"
+
+    //paging分页组件
+    api 'androidx.paging:paging-runtime-ktx:2.1.2'
+
+    //页面刷新组件
+    api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0'
+    api 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0'
+
+    //viewpager2 可以禁止预加载
+    api "androidx.viewpager2:viewpager2:1.1.0-alpha01"
+
+    //图片加载
+    api 'com.github.bumptech.glide:glide:4.9.0'
+    api 'jp.wasabeef:glide-transformations:4.0.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+
+    api 'com.alibaba:fastjson:1.2.75'
+
+    api project(':hi_library')
+
+    api 'com.kingja.loadsir:loadsir:1.3.8'
+}

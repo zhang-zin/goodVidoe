@@ -1,5 +1,7 @@
 include ':libNavCompiler'
 include ':libNavAnnotation'
 include ':hi_library'
+include ':libcommon'
+
 include ':app'
-rootProject.name = "goodVidoe"
+rootProject.name = "goodvideo"
