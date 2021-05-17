@@ -19,7 +19,8 @@ import com.zj.goodvideo.databinding.LayoutRefreshViewBinding
 import com.zj.libcommon.ui.BaseFragment
 import java.lang.reflect.ParameterizedType
 
-abstract class AbsListFragment<T, M : AbsViewModel<T>> : BaseFragment<LayoutRefreshViewBinding>(),
+abstract class AbsListFragment<Key, T, M : AbsViewModel<Key, T>> :
+    BaseFragment<LayoutRefreshViewBinding>(),
     OnRefreshListener,
     OnLoadMoreListener {
 
@@ -67,10 +68,10 @@ abstract class AbsListFragment<T, M : AbsViewModel<T>> : BaseFragment<LayoutRefr
             mViewModel = ViewModelProvider(this).get(modelClazz)
 
             //触发页面初始化数据加载的逻辑
-            mViewModel.pageData.observe(this) { pagedList -> submitList(pagedList) }
+            mViewModel.getPageData().observe(this) { pagedList -> submitList(pagedList) }
 
             //监听分页时有无更多数据,以决定是否关闭上拉加载的动画
-            mViewModel.boundaryPageData.observe(this) { hasData -> finishRefresh(hasData) }
+            mViewModel.getBoundaryPageData().observe(this) { hasData -> finishRefresh(hasData) }
         }
     }
 
