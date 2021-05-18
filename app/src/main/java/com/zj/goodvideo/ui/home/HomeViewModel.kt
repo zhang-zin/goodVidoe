@@ -1,33 +1,62 @@
 package com.zj.goodvideo.ui.home
 
+import androidx.lifecycle.viewModelScope
 import androidx.paging.ItemKeyedDataSource
+import com.zj.goodvideo.http.RetrofitHelper
 import com.zj.goodvideo.model.Feed
 import com.zj.goodvideo.ui.AbsViewModel
+import kotlinx.coroutines.launch
+import java.util.*
 
 class HomeViewModel : AbsViewModel<Int, Feed>() {
+
+    private var feedType: String = "all"
 
     override fun initialLoadKey() = 0
 
     override fun createDataSource() = FeedDataSource()
 
-    class FeedDataSource : ItemKeyedDataSource<Int, Feed>() {
+    fun setFeedType(feedType: String) {
+        this.feedType = feedType
+    }
+
+    inner class FeedDataSource : ItemKeyedDataSource<Int, Feed>() {
         override fun loadInitial(
             params: LoadInitialParams<Int>,
             callback: LoadInitialCallback<Feed>
         ) {
-            TODO("Not yet implemented")
+            //加载初始化数据
+            loadData(0, params.requestedLoadSize, callback)
         }
 
         override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Feed>) {
-            TODO("Not yet implemented")
+            //向后加载数据
+            loadData(params.key, params.requestedLoadSize, callback)
         }
 
         override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Feed>) {
-            TODO("Not yet implemented")
+            //能够向前加载数据的
+            callback.onResult(emptyList())
         }
 
-        override fun getKey(item: Feed): Int {
-            TODO("Not yet implemented")
+        override fun getKey(item: Feed) = item.id
+    }
+
+    private fun loadData(
+        feedId: Int,
+        pageCount: Int,
+        callback: ItemKeyedDataSource.LoadCallback<Feed>
+    ) {
+        viewModelScope.launch {
+            val queryHotFeedsList =
+                RetrofitHelper.apiServer.queryHotFeedsList(feedType, 0, feedId, pageCount)
+            val list = queryHotFeedsList.body ?: Collections.emptyList()
+            callback.onResult(list)
+
+            if (feedId>0){
+                getBoundaryPageData().value == list.isNotEmpty()
+
+            }
         }
     }
 

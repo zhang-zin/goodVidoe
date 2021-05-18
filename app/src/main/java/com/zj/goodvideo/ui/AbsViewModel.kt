@@ -15,7 +15,7 @@ abstract class AbsViewModel<Key, Value> : ViewModel() {
 
     private val factory: DataSource.Factory<Key, Value> = object : DataSource.Factory<Key, Value>() {
         override fun create(): DataSource<Key, Value> {
-            if (dataSource?.isInvalid == true) {
+            if (dataSource == null || dataSource?.isInvalid == true) {
                 dataSource = createDataSource()
             }
             return dataSource!!

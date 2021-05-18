@@ -62,7 +62,7 @@ abstract class AbsListFragment<Key, T, M : AbsViewModel<Key, T>> :
         val type = javaClass.genericSuperclass as ParameterizedType
         val arguments = type.actualTypeArguments
         if (arguments.size > 1) {
-            val argument = arguments[1]
+            val argument = arguments[2]
             val modelClazz: Class<M> =
                 (argument as Class<*>).asSubclass(AbsViewModel::class.java) as Class<M>
             mViewModel = ViewModelProvider(this).get(modelClazz)
