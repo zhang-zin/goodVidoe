@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import androidx.paging.PagingConfig
 
 abstract class AbsViewModel<Key, Value> : ViewModel() {
 
@@ -13,14 +14,15 @@ abstract class AbsViewModel<Key, Value> : ViewModel() {
     protected val boundaryPageData = MutableLiveData<Boolean>()
     private val pageData: LiveData<PagedList<Value>>
 
-    private val factory: DataSource.Factory<Key, Value> = object : DataSource.Factory<Key, Value>() {
-        override fun create(): DataSource<Key, Value> {
-            if (dataSource == null || dataSource?.isInvalid == true) {
-                dataSource = createDataSource()
+    private val factory: DataSource.Factory<Key, Value> =
+        object : DataSource.Factory<Key, Value>() {
+            override fun create(): DataSource<Key, Value> {
+                if (dataSource == null || dataSource?.isInvalid == true) {
+                    dataSource = createDataSource()
+                }
+                return dataSource!!
             }
-            return dataSource!!
         }
-    }
 
     private val callback = object : PagedList.BoundaryCallback<Value>() {
         override fun onZeroItemsLoaded() {
@@ -39,6 +41,10 @@ abstract class AbsViewModel<Key, Value> : ViewModel() {
     }
 
     init {
+        PagingConfig(
+            pageSize = 10,
+            enablePlaceholders = false
+        )
         val config: PagedList.Config = PagedList.Config.Builder()
             .setPageSize(10)
             .setInitialLoadSizeHint(12)
