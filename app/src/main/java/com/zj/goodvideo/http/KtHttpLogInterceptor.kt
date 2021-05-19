@@ -127,8 +127,6 @@ class KtHttpLogInterceptor(block: (KtHttpLogInterceptor.() -> Unit)? = null) : I
                     val bodyData = peekBody.string()
                     if (bodyData.length > 200) {
                         val size = bodyData.length / 200 + 1
-                        sb.appendLine("size: $size")
-                        sb.appendLine("length: " + bodyData.length)
                         var start = 0
                         for (i in 0 until size) {
                             val end = if (200 * (i + 1) >= bodyData.length) {
@@ -136,20 +134,14 @@ class KtHttpLogInterceptor(block: (KtHttpLogInterceptor.() -> Unit)? = null) : I
                             } else {
                                 200 * (i + 1)
                             }
-                            sb.appendLine("i: $i")
-                            sb.appendLine("start: $start")
-                            sb.appendLine("end: $end")
                             sb.appendLine(bodyData.substring(start, end))
-                            Log.e("zhang",bodyData.substring(start, end))
                             start = end
                         }
                     }
-                }.onFailure {
-                    Log.e("zhang", it.message ?: "")
                 }.getOrNull()
             }
         }
-        sb.appendLine("<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<")
+        sb.appendLine("<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-<<-")
         logIt(sb, LogColor.INFO)
     }
 

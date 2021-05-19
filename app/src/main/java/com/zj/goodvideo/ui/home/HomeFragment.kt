@@ -1,13 +1,10 @@
 package com.zj.goodvideo.ui.home
 
-import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.zj.goodvideo.model.Feed
 import com.zj.goodvideo.ui.AbsListFragment
-import com.zj.libcommon.AbsPagedListAdapter
 import com.zj.libnavannotation.FragmentDestination
 
 @FragmentDestination(pageUrl = "main/tabs/home", asStarter = true)

@@ -201,6 +201,5 @@ public abstract class AbsPagedListAdapter<T, VH extends RecyclerView.ViewHolder>
             mObserver.onItemRangeMoved(fromPosition + mHeaders.size(), toPosition + mHeaders.size(), itemCount);
         }
 
-
     }
 }

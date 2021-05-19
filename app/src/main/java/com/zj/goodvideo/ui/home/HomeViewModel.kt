@@ -1,12 +1,12 @@
 package com.zj.goodvideo.ui.home
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ItemKeyedDataSource
 import com.zj.goodvideo.http.RetrofitHelper
 import com.zj.goodvideo.model.Feed
 import com.zj.goodvideo.ui.AbsViewModel
 import kotlinx.coroutines.launch
-import java.util.*
 
 class HomeViewModel : AbsViewModel<Int, Feed>() {
 
@@ -50,10 +50,11 @@ class HomeViewModel : AbsViewModel<Int, Feed>() {
         viewModelScope.launch {
             val queryHotFeedsList =
                 RetrofitHelper.apiServer.queryHotFeedsList(feedType, 0, feedId, pageCount)
-            val list = queryHotFeedsList.body ?: Collections.emptyList()
+            Log.e("zhang", queryHotFeedsList.data.data.size.toString())
+            val list = queryHotFeedsList.data.data
             callback.onResult(list)
 
-            if (feedId>0){
+            if (feedId > 0) {
                 getBoundaryPageData().value == list.isNotEmpty()
 
             }
