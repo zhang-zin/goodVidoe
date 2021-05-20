@@ -1,64 +1,40 @@
 package com.zj.goodvideo.ui.home
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
-import androidx.paging.ItemKeyedDataSource
+import androidx.paging.PagingData
+import androidx.paging.PagingSource
+import androidx.paging.cachedIn
 import com.zj.goodvideo.http.RetrofitHelper
 import com.zj.goodvideo.model.Feed
 import com.zj.goodvideo.ui.AbsViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
 
 class HomeViewModel : AbsViewModel<Int, Feed>() {
 
     private var feedType: String = "all"
 
-    override fun initialLoadKey() = 0
-
-    override fun createDataSource() = FeedDataSource()
-
     fun setFeedType(feedType: String) {
         this.feedType = feedType
     }
 
-    inner class FeedDataSource : ItemKeyedDataSource<Int, Feed>() {
-        override fun loadInitial(
-            params: LoadInitialParams<Int>,
-            callback: LoadInitialCallback<Feed>
-        ) {
-            //加载初始化数据
-            loadData(0, params.requestedLoadSize, callback)
-        }
-
-        override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Feed>) {
-            //向后加载数据
-            loadData(params.key, params.requestedLoadSize, callback)
-        }
-
-        override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Feed>) {
-            //能够向前加载数据的
-            callback.onResult(emptyList())
-        }
-
-        override fun getKey(item: Feed) = item.id
+    override fun createPagingSource(): PagingSource<Int, Feed> {
+        return FeedDataSource(RetrofitHelper.apiServer, feedType)
     }
 
-    private fun loadData(
-        feedId: Int,
-        pageCount: Int,
-        callback: ItemKeyedDataSource.LoadCallback<Feed>
-    ) {
-        viewModelScope.launch {
-            val queryHotFeedsList =
-                RetrofitHelper.apiServer.queryHotFeedsList(feedType, 0, feedId, pageCount)
-            Log.e("zhang", queryHotFeedsList.data.data.size.toString())
-            val list = queryHotFeedsList.data.data
-            callback.onResult(list)
+    private var currentQueryValue: String? = null
 
-            if (feedId > 0) {
-                getBoundaryPageData().value == list.isNotEmpty()
+    private var currentSearchResult: Flow<PagingData<Feed>>? = null
 
-            }
-        }
+    fun searchRepo(queryString: String): Flow<PagingData<Feed>> {
+        /*val lastResult = currentSearchResult
+        if (queryString == currentQueryValue && lastResult != null) {
+            return lastResult
+        }*/
+//        currentQueryValue = queryString
+        val newResult: Flow<PagingData<Feed>> = getResultStream()
+            .cachedIn(viewModelScope)
+//        currentSearchResult = newResult
+        return newResult
     }
 
 }
