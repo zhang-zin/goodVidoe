@@ -1,5 +1,6 @@
 package com.zj.goodvideo.ui.home
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.zj.goodvideo.http.ApiServer
@@ -34,19 +35,22 @@ class FeedDataSource(private val api: ApiServer, private val feedType: String) :
      *        LoadResult.Error 发生错误
      */
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Feed> {
-        var position = params.key ?: STARTING_PAGE_INDEX
-        val loadSize = params.loadSize
+        val position = params.key ?: STARTING_PAGE_INDEX
+        Log.e("zhang", "position: $position")
         return try {
-            val queryHotFeedsList = api.queryHotFeedsList(feedType, 0, position, loadSize)
-            val data = queryHotFeedsList.data.data
-            val nextKey = if (data.isEmpty()) {
+            val response = api.queryHotFeedsList(feedType, 0, position, params.loadSize)
+            val feedList = response.data.data
+            val nextKey = if (feedList.isEmpty()) {
                 null
             } else {
-                position++
+                params.key ?: 0 + 1
             }
-            LoadResult.Page(data = data,prevKey =if (position == STARTING_PAGE_INDEX) null else position - 1,
-                nextKey = nextKey )
-        }catch (exception: IOException) {
+            LoadResult.Page(
+                data = feedList,
+                prevKey = if (position == STARTING_PAGE_INDEX) null else position - 1,
+                nextKey = nextKey
+            )
+        } catch (exception: IOException) {
             return LoadResult.Error(exception)
         } catch (exception: HttpException) {
             return LoadResult.Error(exception)

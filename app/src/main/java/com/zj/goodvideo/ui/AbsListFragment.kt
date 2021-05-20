@@ -1,30 +1,28 @@
 package com.zj.goodvideo.ui
 
-import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import androidx.paging.PagedList
-import androidx.paging.PagedListAdapter
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.scwang.smartrefresh.layout.constant.RefreshState
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import com.zj.goodvideo.R
 import com.zj.goodvideo.databinding.LayoutRefreshViewBinding
 import com.zj.libcommon.ui.BaseFragment
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
 
-abstract class AbsListFragment<Key, T, M : AbsViewModel<Key, T>> :
+abstract class AbsListFragment<Key : Any, T : Any, M : AbsViewModel<Key, T>> :
     BaseFragment<LayoutRefreshViewBinding>(),
     OnRefreshListener,
     OnLoadMoreListener {
 
-    lateinit var pagedListAdapter: PagedListAdapter<T, RecyclerView.ViewHolder>
+    lateinit var pagedListAdapter: PagingDataAdapter<T, RecyclerView.ViewHolder>
     lateinit var decoration: DividerItemDecoration
     lateinit var mViewModel: M
 
@@ -68,44 +66,51 @@ abstract class AbsListFragment<Key, T, M : AbsViewModel<Key, T>> :
             mViewModel = ViewModelProvider(this).get(modelClazz)
 
             //触发页面初始化数据加载的逻辑
-            mViewModel.getPageData().observe(this) { pagedList ->
-                submitList(pagedList)
+            lifecycleScope.launch {
+                mViewModel.getResultStream().collectLatest {
+                    pagedListAdapter.submitData(it)
+                    submitList(it)
+                }
             }
 
+//            mViewModel.getPageData().observe(this) { pagedList ->
+//                submitList(pagedList)
+//            }
+
             //监听分页时有无更多数据,以决定是否关闭上拉加载的动画
-            mViewModel.getBoundaryPageData().observe(this) { hasData -> finishRefresh(hasData) }
+//            mViewModel.getBoundaryPageData().observe(this) { hasData -> finishRefresh(hasData) }
         }
     }
 
-    fun submitList(result: PagedList<T>) {
+    private fun submitList(result: PagingData<T>) {
         //只有当新数据集合大于0 的时候，才调用adapter.submitList
         //否则可能会出现 页面----有数据----->被清空-----空布局
-        if (result.size > 0) {
-            pagedListAdapter.submitList(result)
-        }
-        finishRefresh(result.size > 0)
+//        if (result.size > 0) {
+//            pagedListAdapter.submitList(result)
+//        }
+//        finishRefresh(result.size > 0)
     }
 
-    fun finishRefresh(hasListData: Boolean) {
-        val currentList: PagedList<T>? = pagedListAdapter.currentList
-        val hasData = hasListData || currentList != null && currentList.size > 0
-        val state: RefreshState = binding.refreshLayout.state
-        if (state.isFooter && state.isOpening) {
-            binding.refreshLayout.finishLoadMore()
-        } else if (state.isHeader && state.isOpening) {
-            binding.refreshLayout.finishRefresh()
-        }
-        if (hasData) {
-            binding.emptyView.visibility = View.GONE
-        } else {
-            binding.emptyView.visibility = View.VISIBLE
-        }
-    }
+//    private fun finishRefresh(hasListData: Boolean) {
+//        val currentList: PagedList<T>? = pagedListAdapter.currentList
+//        val hasData = hasListData || currentList != null && currentList.size > 0
+//        val state: RefreshState = binding.refreshLayout.state
+//        if (state.isFooter && state.isOpening) {
+//            binding.refreshLayout.finishLoadMore()
+//        } else if (state.isHeader && state.isOpening) {
+//            binding.refreshLayout.finishRefresh()
+//        }
+//        if (hasData) {
+//            binding.emptyView.visibility = View.GONE
+//        } else {
+//            binding.emptyView.visibility = View.VISIBLE
+//        }
+//    }
 
     /**
      * 我们在 onCreateView的时候 创建了 PagedListAdapter
      * 所以，如果arguments 有参数需要传递到Adapter 中，那么需要在getAdapter()方法中取出参数。
      */
-    abstract fun getAdapter(): PagedListAdapter<T, RecyclerView.ViewHolder>
+    abstract fun getAdapter(): PagingDataAdapter<T, RecyclerView.ViewHolder>
 
 }

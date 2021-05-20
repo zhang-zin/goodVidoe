@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
-import androidx.lifecycle.Observer;
+import androidx.paging.PagingDataAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,8 +21,7 @@ import com.zj.goodvideo.model.Feed;
 import com.zj.goodvideo.view.ListPlayerView;
 import com.zj.libcommon.AbsPagedListAdapter;
 
-public class FeedAdapter extends AbsPagedListAdapter<Feed, FeedAdapter.ViewHolder> {
-    private final LayoutInflater inflater;
+public class FeedAdapter extends PagingDataAdapter<Feed, FeedAdapter.ViewHolder> {
     protected Context mContext;
     protected String mCategory;
 
@@ -39,66 +38,35 @@ public class FeedAdapter extends AbsPagedListAdapter<Feed, FeedAdapter.ViewHolde
             }
         });
 
-        inflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(context);
         mContext = context;
         mCategory = category;
     }
 
     @Override
-    public int getItemViewType2(int position) {
-        Feed feed = getItem(position);
-        if (feed.itemType == Feed.TYPE_IMAGE_TEXT) {
+    public int getItemViewType(int position) {
+        Feed item = getItem(position);
+        if (item == null)
+            return 0;
+        if (item.itemType == Feed.TYPE_IMAGE_TEXT) {
             return R.layout.layout_feed_type_image;
-        } else if (feed.itemType == Feed.TYPE_VIDEO) {
+        } else if (item.itemType == Feed.TYPE_VIDEO) {
             return R.layout.layout_feed_type_video;
         }
         return 0;
     }
 
+    @NonNull
     @Override
-    protected ViewHolder onCreateViewHolder2(ViewGroup parent, int viewType) {
-        ViewDataBinding binding = DataBindingUtil.inflate(inflater, viewType, parent, false);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ViewDataBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), viewType, parent, false);
         return new ViewHolder(binding.getRoot(), binding);
     }
 
-
     @Override
-    protected void onBindViewHolder2(ViewHolder holder, int position) {
-        final Feed feed = getItem(position);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.bindData(getItem(position));
 
-        holder.bindData(feed);
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-    }
-
-    public void onStartFeedDetailActivity(Feed feed) {
-
-    }
-
-    private FeedObserver mFeedObserver;
-
-    private class FeedObserver implements Observer<Feed> {
-
-        private Feed mFeed;
-
-        @Override
-        public void onChanged(Feed newOne) {
-            if (mFeed.id != newOne.id)
-                return;
-            mFeed.author = newOne.author;
-            mFeed.ugc = newOne.ugc;
-            mFeed.notifyChange();
-        }
-
-        public void setFeed(Feed feed) {
-
-            mFeed = feed;
-        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

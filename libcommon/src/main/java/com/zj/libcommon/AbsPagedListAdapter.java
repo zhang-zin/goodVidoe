@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.paging.PagedListAdapter;
+import androidx.paging.PagingDataAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
  * @param <T>  Java Bean
  * @param <VH>
  */
-public abstract class AbsPagedListAdapter<T, VH extends RecyclerView.ViewHolder> extends PagedListAdapter<T, VH> {
+public abstract class AbsPagedListAdapter<T, VH extends RecyclerView.ViewHolder> extends PagingDataAdapter<T, VH> {
     private SparseArray<View> mHeaders = new SparseArray<>();
     private SparseArray<View> mFooters = new SparseArray<>();
 
