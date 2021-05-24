@@ -5,14 +5,21 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.zj.goodvideo.http.ApiServer
 import com.zj.goodvideo.model.Feed
+import okio.IOException
 import retrofit2.HttpException
-import java.io.IOException
 
+/***
+ * 定义数据源以及如何从这里检索数据。pagingData对象会查询来自PagingSource的数据，响应Recycleview中
+ */
 private const val STARTING_PAGE_INDEX = 0
 
 class FeedDataSource(private val api: ApiServer, private val feedType: String) :
     PagingSource<Int, Feed>() {
 
+    /**
+     * The refresh key is used for subsequent refresh call
+     * to PagingSource.load after the initial load
+     */
     override fun getRefreshKey(state: PagingState<Int, Feed>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
@@ -20,6 +27,13 @@ class FeedDataSource(private val api: ApiServer, private val feedType: String) :
         }
     }
 
+    /**
+     * 以异步的方式加载更多数据
+     * [params] 保存与加载操作相关的信息：1、要加载页面的键。如果是第一次调用，LoadParams.key将为null
+     *          2、加载大小
+     * return LoadResult.Page 返回成功
+     *        LoadResult.Error 发生错误
+     */
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Feed> {
         val position = params.key ?: STARTING_PAGE_INDEX
         Log.e("zhang", "position: $position")
