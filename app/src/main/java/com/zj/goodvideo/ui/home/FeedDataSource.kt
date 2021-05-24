@@ -43,8 +43,10 @@ class FeedDataSource(private val api: ApiServer, private val feedType: String) :
             val nextKey = if (feedList.isEmpty()) {
                 null
             } else {
-                params.key ?: 0 + 1
+                position + 1
             }
+            Log.e("zhang", "nextKey: $nextKey")
+            // position + (params.loadSize / NETWORK_PAGE_SIZE)
             LoadResult.Page(
                 data = feedList,
                 prevKey = if (position == STARTING_PAGE_INDEX) null else position - 1,
