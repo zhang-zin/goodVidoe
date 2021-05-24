@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import com.zj.goodvideo.R
 import com.zj.hi_library.util.HiDisplayUtil
 import jp.wasabeef.glide.transformations.BlurTransformation
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
@@ -47,7 +48,7 @@ class PPImageView @JvmOverloads constructor(
             if (layoutParams != null && layoutParams.width > 0 && layoutParams.height > 0) {
                 builder.override(layoutParams.width, layoutParams.height)
             }
-            builder.into(view)
+            builder.error(R.drawable.icon_cell_comment).into(view)
         }
 
         @BindingAdapter(value = ["blur_url", "radius"])

@@ -19,16 +19,16 @@ class ListPlayerView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr, defStyleRes) {
 
-    var bufferView: View
+    private var bufferView: View
     var cover: PPImageView
-    var blur: PPImageView
-    var playBtn: ImageView
+    private var blur: PPImageView
+    private var playBtn: ImageView
 
-    var mCategory: String? = null
-    var mVideoUrl: String? = null
+    private var mCategory: String? = null
+    private var mVideoUrl: String? = null
     var isPlaying = false
-    var mWidthPx = 0
-    var mHeightPx = 0
+    private var mWidthPx = 0
+    private var mHeightPx = 0
 
     init {
         LayoutInflater.from(context).inflate(R.layout.layout_player_view, this, true)
@@ -65,7 +65,7 @@ class ListPlayerView @JvmOverloads constructor(
             PPImageView.setBlurImageUrl(blur, coverUrl, 10)
             blur.visibility = VISIBLE
         } else {
-            blur.visibility = INVISIBLE
+            blur.visibility = GONE
         }
 
         setSize(widthPx, heightPx)
@@ -82,7 +82,9 @@ class ListPlayerView @JvmOverloads constructor(
         var coverHeight = 0
         if (widthPx >= heightPx) {
             coverWidth = maxWidth
-            layoutHeight = (heightPx / (widthPx * 1.0f / maxWidth)).toInt()
+            layoutHeight = (heightPx / (widthPx * 1.0f / maxWidth)).toInt().also {
+                coverHeight = it
+            }
         } else {
             layoutHeight = maxHeight.also { coverHeight = it }
             coverWidth = (widthPx / (heightPx * 1.0f / maxHeight)).toInt()
