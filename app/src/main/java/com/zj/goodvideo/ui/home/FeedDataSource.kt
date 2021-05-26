@@ -39,7 +39,7 @@ class FeedDataSource(private val api: ApiServer, private val feedType: String) :
         Log.e("zhang", "position: $position")
         return try {
             val response = api.queryHotFeedsList(feedType, 0, position, params.loadSize)
-            val feedList = response.data.data
+            val feedList = response.data?.data ?: emptyList()
             val nextKey = if (feedList.isEmpty()) {
                 null
             } else {

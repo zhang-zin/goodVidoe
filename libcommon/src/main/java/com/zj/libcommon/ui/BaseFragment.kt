@@ -50,5 +50,4 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
     protected open fun initEvent() {}
 
-    protected open fun onReload() {}
 }
