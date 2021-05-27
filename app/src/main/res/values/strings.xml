@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">goodVideo</string>
+    <string name="app_name">Jetpack</string>
 
     <string name="login_text">QQ快捷登录</string>
     <string name="has_follow">已关注</string>

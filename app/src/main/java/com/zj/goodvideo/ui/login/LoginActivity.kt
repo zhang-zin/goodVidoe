@@ -1,7 +1,6 @@
 package com.zj.goodvideo.ui.login
 
 import android.content.Intent
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.tencent.connect.UserInfo
 import com.tencent.connect.auth.QQToken
@@ -16,7 +15,7 @@ import com.zj.goodvideo.kt.toast
 import com.zj.libcommon.ui.BaseActivity
 import kotlinx.coroutines.launch
 import org.json.JSONObject
-
+import java.util.*
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
@@ -26,7 +25,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         override fun onComplete(any: Any?) {
             val response = any as? JSONObject
             response?.apply {
-                val openId = getString("openId")
+                val openId = getString("openid")
                 val accessToken = getString("access_token")
                 val expiresIn = getString("expires_in")
                 val expiresTime = getLong("expires_time")
@@ -49,6 +48,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         }
 
         override fun onWarning(p0: Int) {
+
         }
         //endregion
     }
@@ -66,9 +66,16 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     private fun login() {
         // TODO: 2021/5/26 qq快捷登录appId
         if (tencent == null) {
-            tencent = Tencent.createInstance("", applicationContext)
+            tencent = Tencent.createInstance(
+                "101794421",
+                applicationContext,
+                "com.zj.goodvideo.fileprovider"
+            )
         }
-        tencent!!.login(this, "all", loginListener)
+        val params = HashMap<String, Any>()
+        params[Constants.KEY_SCOPE] = "all"
+        params[Constants.KEY_QRCODE] = true
+        tencent?.login(this, loginListener, params)
     }
 
     private fun getUserInfo(qqToken: QQToken?, expiresTime: Long, openId: String) {

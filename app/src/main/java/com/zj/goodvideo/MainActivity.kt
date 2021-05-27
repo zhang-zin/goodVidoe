@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.zj.goodvideo.ui.login.UserManager
+import com.zj.goodvideo.utils.AppConfig
 import com.zj.goodvideo.utils.NavGraphBuilder
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -25,6 +27,18 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        val destConfig = AppConfig.getDestConfig()
+        val iterator = destConfig.entries.iterator()
+        while (iterator.hasNext()) {
+            val next = iterator.next()
+            val value = next.value
+            if (!UserManager.isLogin() && value.needLogin) {
+                UserManager.login(this).observe(this) { user ->
+                    user?.let { navView.selectedItemId = item.itemId }
+                }
+                return false
+            }
+        }
         navController.navigate(item.itemId)
         return !TextUtils.isEmpty(item.title)
     }

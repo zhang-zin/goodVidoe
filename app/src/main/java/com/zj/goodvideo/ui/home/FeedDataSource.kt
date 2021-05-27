@@ -1,15 +1,15 @@
 package com.zj.goodvideo.ui.home
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.zj.goodvideo.http.ApiServer
 import com.zj.goodvideo.model.Feed
+import com.zj.goodvideo.ui.login.UserManager
 import okio.IOException
 import retrofit2.HttpException
 
 /***
- * 定义数据源以及如何从这里检索数据。pagingData对象会查询来自PagingSource的数据，响应Recycleview中
+ * 定义数据源以及如何从这里检索数据。pagingData对象会查询来自PagingSource的数据，响应RecycleView中
  */
 private const val STARTING_PAGE_INDEX = 0
 
@@ -36,17 +36,15 @@ class FeedDataSource(private val api: ApiServer, private val feedType: String) :
      */
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Feed> {
         val position = params.key ?: STARTING_PAGE_INDEX
-        Log.e("zhang", "position: $position")
         return try {
-            val response = api.queryHotFeedsList(feedType, 0, position, params.loadSize)
+            val response =
+                api.queryHotFeedsList(feedType, UserManager.getUserId(), position, params.loadSize)
             val feedList = response.data?.data ?: emptyList()
             val nextKey = if (feedList.isEmpty()) {
                 null
             } else {
                 position + 1
             }
-            Log.e("zhang", "nextKey: $nextKey")
-            // position + (params.loadSize / NETWORK_PAGE_SIZE)
             LoadResult.Page(
                 data = feedList,
                 prevKey = if (position == STARTING_PAGE_INDEX) null else position - 1,

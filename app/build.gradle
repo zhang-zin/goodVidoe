@@ -9,7 +9,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.zj.goodvideo"
+        applicationId "com.mooc.ppjoke"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
@@ -42,7 +42,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     //QQ快捷登录
     implementation files('libs/open_sdk_3.5.4.11_r3f56456_lite.jar')

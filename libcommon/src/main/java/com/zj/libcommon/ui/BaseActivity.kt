@@ -1,7 +1,6 @@
 package com.zj.libcommon.ui
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -14,8 +13,8 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     @LayoutRes
     abstract fun getLayoutId(): Int
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, getLayoutId())
         binding.executePendingBindings()
         init()

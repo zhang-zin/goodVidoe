@@ -29,7 +29,7 @@
             android:layout_height="@dimen/dp_45"
             android:layout_margin="@dimen/dp_30"
             android:backgroundTint="@color/color_theme"
-            android:text="QQ快捷登录"
+            android:text="@string/login_text"
             android:textColor="@color/color_white"
             app:cornerRadius="25dp"
             app:layout_constraintBottom_toBottomOf="parent"

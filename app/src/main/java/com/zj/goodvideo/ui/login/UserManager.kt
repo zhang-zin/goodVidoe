@@ -8,6 +8,7 @@ import com.zj.goodvideo.http.RetrofitHelper
 import com.zj.goodvideo.kt.toast
 import com.zj.goodvideo.model.User
 import com.zj.hi_library.cache.HiStorage
+import com.zj.hi_library.executor.HiExecutor
 import com.zj.hi_library.util.AppGlobals
 
 object UserManager {
@@ -16,15 +17,17 @@ object UserManager {
     private var mUser: User? = null
 
     init {
-        val cache = HiStorage.getCache<User>(KEY_CACHE_USER)
-        if (cache != null && cache.expires_time > System.currentTimeMillis()) {
-            mUser = cache
+        HiExecutor.execute {
+            val cache = HiStorage.getCache<User>(KEY_CACHE_USER)
+            if (cache != null && cache.expires_time > System.currentTimeMillis()) {
+                mUser = cache
+            }
         }
     }
 
     fun save(user: User) {
         mUser = user
-        HiStorage.saveCache(KEY_CACHE_USER, user)
+        HiExecutor.execute { HiStorage.saveCache(KEY_CACHE_USER, user) }
         if (userLiveData.hasActiveObservers()) {
             userLiveData.postValue(user)
         }
