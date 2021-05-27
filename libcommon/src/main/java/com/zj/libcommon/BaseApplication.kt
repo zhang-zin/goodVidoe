@@ -5,7 +5,7 @@ import com.kingja.loadsir.core.LoadSir
 import com.zj.hi_library.hiLog.HiLogManager
 import com.zj.libcommon.callback.*
 
-class BaseApplication : Application() {
+open class BaseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()

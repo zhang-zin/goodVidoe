@@ -2,8 +2,11 @@ package com.zj.goodvideo.http
 
 import com.zj.goodvideo.model.Feed
 import com.zj.goodvideo.model.User
+import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
+import com.alibaba.fastjson.JSONObject
+
 
 interface ApiServer {
 
@@ -27,4 +30,16 @@ interface ApiServer {
     suspend fun queryUser(
         @Query("userId") userId: Long
     ): ApiResponse<User>
+
+    @GET("ugc/toggleFeedLike")
+    fun toggleFeedLike(
+        @Query("userId") userId: Long,
+        @Query("itemId") itemId: Long
+    ): Call<ApiResponse<JSONObject>>
+
+    @GET("ugc/dissFeed")
+    fun toggleFeedDiss(
+        @Query("userId") userId: Long,
+        @Query("itemId") itemId: Long
+    ): Call<ApiResponse<JSONObject>>
 }

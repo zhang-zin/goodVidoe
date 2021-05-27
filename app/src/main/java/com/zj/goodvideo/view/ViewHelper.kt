@@ -28,7 +28,6 @@ object ViewHelper {
         setViewOutline(view, radius, hideSide)
     }
 
-
     fun setViewOutline(owner: View, radius: Int, radiusSide: Int) {
         owner.outlineProvider = object : ViewOutlineProvider() {
             override fun getOutline(view: View?, outline: Outline?) {
