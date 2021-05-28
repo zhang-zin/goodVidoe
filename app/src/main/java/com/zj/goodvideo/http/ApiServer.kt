@@ -7,7 +7,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import com.alibaba.fastjson.JSONObject
 
-
 interface ApiServer {
 
     @GET("feeds/queryHotFeedsList")
@@ -42,4 +41,7 @@ interface ApiServer {
         @Query("userId") userId: Long,
         @Query("itemId") itemId: Long
     ): Call<ApiResponse<JSONObject>>
+
+    @GET("ugc/increaseShareCount")
+    fun share(@Query("itemId") itemId: Long): Call<ApiResponse<JSONObject>>
 }

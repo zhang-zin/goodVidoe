@@ -1,5 +1,6 @@
 package com.zj.goodvideo.ui.share
 
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ResolveInfo
@@ -28,6 +29,8 @@ class ShareDialog(context: Context) : AlertDialog(context) {
     lateinit var layout: CornerFrameLayout
     val adapter = ShareAdapter()
     var shareitems = mutableListOf<ResolveInfo>()
+    private var shareContent: String? = ""
+    private var clickListener: () -> Unit? = {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -65,6 +68,14 @@ class ShareDialog(context: Context) : AlertDialog(context) {
         queryShareItems()
     }
 
+    fun setShareContent(shareContent: String) {
+        this.shareContent = shareContent
+    }
+
+    fun setListener(clickListener: () -> Unit) {
+        this.clickListener = clickListener
+    }
+
     private fun queryShareItems() {
         val intent = Intent()
         intent.action = Intent.ACTION_SEND
@@ -78,6 +89,9 @@ class ShareDialog(context: Context) : AlertDialog(context) {
             ) {
                 shareitems.add(resolveInfo)
             }
+        }
+        if (shareitems.isEmpty()) {
+            dismiss()
         }
         adapter.notifyDataSetChanged()
     }
@@ -99,6 +113,20 @@ class ShareDialog(context: Context) : AlertDialog(context) {
             val shareIcon = holder.itemView.findViewById<PPImageView>(R.id.share_icon)
             shareText.text = resolveInfo.loadLabel(packageManager)
             shareIcon.setImageDrawable(resolveInfo.loadIcon(packageManager))
+
+            holder.itemView.setOnClickListener {
+                val packageName = resolveInfo.activityInfo.packageName
+                val cls = resolveInfo.activityInfo.name;
+                val intent = Intent()
+                intent.action = Intent.ACTION_SEND
+                intent.setType("text/plain")
+                intent.setComponent(ComponentName(packageName, cls))
+                intent.putExtra(Intent.EXTRA_TEXT, shareContent);
+
+                context.startActivity(intent)
+                clickListener.invoke()
+                dismiss()
+            }
         }
 
         override fun getItemCount() = shareitems.size

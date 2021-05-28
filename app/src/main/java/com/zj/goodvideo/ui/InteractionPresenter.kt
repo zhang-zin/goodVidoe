@@ -50,7 +50,28 @@ fun showShare(context: Context, feed: Feed) {
     } else if (!TextUtils.isEmpty(feed.cover)) {
         shareContent = feed.cover
     }
-    ShareDialog(context).show()
+    val shareDialog = ShareDialog(context)
+    shareDialog.setShareContent(shareContent)
+    shareDialog.setListener {
+        RetrofitHelper.apiServer
+            .share(feed.itemId)
+            .enqueue(object : Callback<ApiResponse<JSONObject>> {
+                override fun onResponse(
+                    call: Call<ApiResponse<JSONObject>>,
+                    response: Response<ApiResponse<JSONObject>>
+                ) {
+                    if (response.body() != null) {
+                        val count = response.body()!!.data?.data?.getIntValue("count")
+                            ?: feed.getUgc().getShareCount()
+                        feed.getUgc().setShareCount(count)
+                    }
+                }
+                override fun onFailure(call: Call<ApiResponse<JSONObject>>, t: Throwable) {
+                }
+
+            })
+    }
+    shareDialog.show()
 }
 
 private fun toggleFeedLikeInternal(feed: Feed) {
