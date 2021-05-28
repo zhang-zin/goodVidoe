@@ -12,11 +12,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zj.goodvideo.R
 import com.zj.goodvideo.view.CornerFrameLayout
+import com.zj.goodvideo.view.PPImageView
 import com.zj.goodvideo.view.ViewHelper
 import com.zj.hi_library.util.HiDisplayUtil
 import java.util.*
@@ -32,6 +34,7 @@ class ShareDialog(context: Context) : AlertDialog(context) {
         super.onCreate(savedInstanceState)
 
         layout = CornerFrameLayout(context)
+        layout.setBackgroundColor(Color.WHITE)
         layout.setViewOutline(HiDisplayUtil.dp2px(20f), ViewHelper.RADIUS_TOP)
 
         val gridView = RecyclerView(context)
@@ -80,14 +83,22 @@ class ShareDialog(context: Context) : AlertDialog(context) {
     }
 
     inner class ShareAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+        private val packageManager = context.packageManager
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             val inflate =
-                LayoutInflater.from(parent.context).inflate(R.layout.layout_share_item, parent)
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.layout_share_item, parent, false)
             return object : RecyclerView.ViewHolder(inflate) {}
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            TODO("Not yet implemented")
+            val resolveInfo = shareitems[position]
+            val shareText = holder.itemView.findViewById<TextView>(R.id.share_text)
+            val shareIcon = holder.itemView.findViewById<PPImageView>(R.id.share_icon)
+            shareText.text = resolveInfo.loadLabel(packageManager)
+            shareIcon.setImageDrawable(resolveInfo.loadIcon(packageManager))
         }
 
         override fun getItemCount() = shareitems.size

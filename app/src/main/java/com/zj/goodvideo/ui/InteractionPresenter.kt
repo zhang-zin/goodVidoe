@@ -1,5 +1,7 @@
 package com.zj.goodvideo.ui
 
+import android.content.Context
+import android.text.TextUtils
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -10,6 +12,7 @@ import com.zj.goodvideo.kt.toast
 import com.zj.goodvideo.model.Feed
 import com.zj.goodvideo.model.User
 import com.zj.goodvideo.ui.login.UserManager
+import com.zj.goodvideo.ui.share.ShareDialog
 import com.zj.hi_library.util.AppGlobals
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,6 +41,16 @@ fun toggleFeedDiss(owner: LifecycleOwner, feed: Feed) {
     if (isLogin) {
         toggleFeedDissInternal(feed)
     }
+}
+
+fun showShare(context: Context, feed: Feed) {
+    var shareContent = feed.feeds_text
+    if (!TextUtils.isEmpty(feed.url)) {
+        shareContent = feed.url
+    } else if (!TextUtils.isEmpty(feed.cover)) {
+        shareContent = feed.cover
+    }
+    ShareDialog(context).show()
 }
 
 private fun toggleFeedLikeInternal(feed: Feed) {
