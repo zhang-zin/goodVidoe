@@ -8,12 +8,14 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.zj.goodvideo.R
 import com.zj.goodvideo.view.CornerFrameLayout
 import com.zj.goodvideo.view.ViewHelper
 import com.zj.hi_library.util.HiDisplayUtil
@@ -77,17 +79,17 @@ class ShareDialog(context: Context) : AlertDialog(context) {
         adapter.notifyDataSetChanged()
     }
 
-    class ShareAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    inner class ShareAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            TODO("Not yet implemented")
+            val inflate =
+                LayoutInflater.from(parent.context).inflate(R.layout.layout_share_item, parent)
+            return object : RecyclerView.ViewHolder(inflate) {}
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             TODO("Not yet implemented")
         }
 
-        override fun getItemCount(): Int {
-            TODO("Not yet implemented")
-        }
+        override fun getItemCount() = shareitems.size
     }
 }
