@@ -17,12 +17,12 @@ import com.zj.libcommon.databinding.LayoutRefreshViewBinding
 import com.zj.libcommon.ui.loadState.ReposLoadStateAdapter
 import java.lang.reflect.ParameterizedType
 
-abstract class AbsListFragment<Key : Any, T : Any, M : AbsViewModel<Key, T>> :
+abstract class AbsListFragment<Key : Any, T : Any, M : AbsViewModel<Key, T>, VH : RecyclerView.ViewHolder> :
     BaseFragment<LayoutRefreshViewBinding>(),
     OnRefreshListener,
     OnLoadMoreListener {
 
-    lateinit var pagedListAdapter: PagingDataAdapter<T, RecyclerView.ViewHolder>
+    lateinit var pagedListAdapter: PagingDataAdapter<T, VH>
     lateinit var decoration: DividerItemDecoration
     lateinit var mViewModel: M
 
@@ -132,6 +132,6 @@ abstract class AbsListFragment<Key : Any, T : Any, M : AbsViewModel<Key, T>> :
      * 我们在 onCreateView的时候 创建了 PagedListAdapter
      * 所以，如果arguments 有参数需要传递到Adapter 中，那么需要在getAdapter()方法中取出参数。
      */
-    abstract fun getAdapter(): PagingDataAdapter<T, RecyclerView.ViewHolder>
+    abstract fun getAdapter(): PagingDataAdapter<T, VH>
 
 }
