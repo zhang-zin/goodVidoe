@@ -67,13 +67,13 @@ open class FeedAdapter(private val context: Context, val category: String) :
             item?.run {
                 binding.setVariable(BR.feed, this)
                 binding.setVariable(BR.lifeCycleOwner, context)
-                if (isVideoItem()) {
-                    val videoBinding = binding as LayoutFeedTypeVideoBinding
+                if (binding is LayoutFeedTypeVideoBinding) {
+                    val videoBinding = binding
                     videoBinding.listPlayerView.bindData(category, width, height, cover, url)
                     listPlayerView = videoBinding.listPlayerView
-                } else {
-                    val imageBinding = binding as LayoutFeedTypeImageBinding
-                    imageBinding.feedImage.bindData(width, height, 16, cover)
+                } else if (binding is LayoutFeedTypeImageBinding) {
+                    val imageBinding = binding
+                    imageBinding.feedImage.bindData(width, height, 16, cover ?: "")
                     feedImage = imageBinding.feedImage
                 }
             }

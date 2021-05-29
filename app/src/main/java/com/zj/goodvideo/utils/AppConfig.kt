@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.TypeReference
 import com.zj.goodvideo.model.BottomBar
 import com.zj.goodvideo.model.Destination
+import com.zj.goodvideo.model.SofaTab
 import com.zj.hi_library.util.AppGlobals
 import java.io.BufferedReader
 import java.io.IOException
@@ -13,6 +14,7 @@ object AppConfig {
 
     private var sDestConfig: HashMap<String, Destination>? = null
     private var sTabsConfig: BottomBar? = null
+    private var sSofaTab: SofaTab? = null
 
     fun getDestConfig(): HashMap<String, Destination> {
         if (sDestConfig == null) {
@@ -30,6 +32,14 @@ object AppConfig {
             sTabsConfig = JSON.parseObject(content, BottomBar::class.java)
         }
         return sTabsConfig!!
+    }
+
+    fun getSofaTab(): SofaTab {
+        if (sSofaTab == null) {
+            val content = parseFile("sofa_tabs_config.json")
+            sSofaTab = JSON.parseObject(content, SofaTab::class.java)
+        }
+        return sSofaTab!!
     }
 
     private fun parseFile(fileName: String): String {

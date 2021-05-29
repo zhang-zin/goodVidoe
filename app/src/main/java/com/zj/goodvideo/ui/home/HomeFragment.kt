@@ -79,14 +79,13 @@ class HomeFragment : AbsListFragment<Int, Feed, HomeViewModel, FeedAdapter.ViewH
                 }
         }
         */
-        mViewModel.setFeedType(feedType)
         playDetector = PageListPlayDetector(this, binding.recycleView)
     }
 
     private fun getFeedListData() {
         requestJob?.cancel()
         requestJob = lifecycleScope.launch {
-            mViewModel.searchRepo("all").collectLatest {
+            mViewModel.searchRepo(feedType).collectLatest {
                 pagedListAdapter.submitData(it)
             }
         }

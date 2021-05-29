@@ -83,7 +83,7 @@ class PPImageView @JvmOverloads constructor(
             heightPx,
             marginLeft,
             HiDisplayUtil.getScreenWidth(),
-            HiDisplayUtil.getScreenHeight(),
+            HiDisplayUtil.getScreenWidth(),
             imageUrl
         )
     }
@@ -99,7 +99,7 @@ class PPImageView @JvmOverloads constructor(
         visibility = if (imageUrl.isEmpty()) {
             View.GONE
         } else {
-            View.INVISIBLE
+            View.VISIBLE
         }
 
         if (widthPx <= 0 || heightPx <= 0) {
