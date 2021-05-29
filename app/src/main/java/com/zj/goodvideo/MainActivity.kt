@@ -10,6 +10,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.zj.goodvideo.ui.login.UserManager
 import com.zj.goodvideo.utils.AppConfig
 import com.zj.goodvideo.utils.NavGraphBuilder
+import com.zj.hi_library.util.HiStatusBar
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -17,6 +18,8 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
+        HiStatusBar.setStatusBar(this, darkContent = true, translucent = false)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         navView = findViewById(R.id.nav_view)
