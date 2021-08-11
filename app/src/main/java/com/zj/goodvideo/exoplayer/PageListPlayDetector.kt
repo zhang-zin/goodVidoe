@@ -153,7 +153,7 @@ class PageListPlayDetector(owner: LifecycleOwner, val recyclerView: RecyclerView
 
     fun onResume() {
         // TODO: 2021/5/29 控制加载列表item自动播放
-        //onActive()
+        //playingTarget?.onActive()
     }
 
 }

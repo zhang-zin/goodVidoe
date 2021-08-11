@@ -37,10 +37,10 @@ class SofaFragment : BaseFragment<FragmentSofaBinding>() {
                 val customView = tab?.customView as TextView
                 if (tab.position == position) {
                     customView.textSize = tabConfig.activeSize.toFloat()
-                    customView.setTypeface(Typeface.DEFAULT_BOLD)
+                    customView.typeface = Typeface.DEFAULT_BOLD
                 } else {
                     customView.textSize = tabConfig.normalSize.toFloat()
-                    customView.setTypeface(Typeface.DEFAULT)
+                    customView.typeface = Typeface.DEFAULT
                 }
             }
         }
@@ -52,9 +52,6 @@ class SofaFragment : BaseFragment<FragmentSofaBinding>() {
         tabConfig = getTabConfig()
         tabs = tabConfig.tabs.filter { tab ->
             tab.enable
-        }.sortedBy { tab ->
-            //sortedByDescending 降序
-            tab.index
         }
 
         //现在页面预加载

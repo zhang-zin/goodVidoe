@@ -84,11 +84,12 @@ class ShareDialog(context: Context) : AlertDialog(context) {
         val resolveInfos = context.packageManager.queryIntentActivities(intent, 0)
         for (resolveInfo in resolveInfos) {
             val packageName = resolveInfo.activityInfo.packageName
-            if (TextUtils.equals(packageName, "com.tencent.mm")
-                || TextUtils.equals(packageName, "com.tencent.mobileqq")
-            ) {
-                shareitems.add(resolveInfo)
-            }
+//            if (TextUtils.equals(packageName, "com.tencent.mm")
+//                || TextUtils.equals(packageName, "com.tencent.mobileqq")
+//            ) {
+//                shareitems.add(resolveInfo)
+//            }
+            shareitems.add(resolveInfo)
         }
         if (shareitems.isEmpty()) {
             dismiss()
@@ -119,8 +120,8 @@ class ShareDialog(context: Context) : AlertDialog(context) {
                 val cls = resolveInfo.activityInfo.name;
                 val intent = Intent()
                 intent.action = Intent.ACTION_SEND
-                intent.setType("text/plain")
-                intent.setComponent(ComponentName(packageName, cls))
+                intent.type = "text/plain"
+                intent.component = ComponentName(packageName, cls)
                 intent.putExtra(Intent.EXTRA_TEXT, shareContent);
 
                 context.startActivity(intent)

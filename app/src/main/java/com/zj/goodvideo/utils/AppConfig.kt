@@ -38,6 +38,9 @@ object AppConfig {
         if (sSofaTab == null) {
             val content = parseFile("sofa_tabs_config.json")
             sSofaTab = JSON.parseObject(content, SofaTab::class.java)
+            sSofaTab?.tabs?.sortBy {
+                it.index
+            }
         }
         return sSofaTab!!
     }
